@@ -49,7 +49,17 @@ CAPS.Simulation.prototype = {
 		this.scene.add( this.selection.touchMeshes );
 		this.scene.add( this.selection.displayMeshes );
 
-		this.renderer = new THREE.WebGLRenderer( { antialias: true } );
+		var canvas = document.createElement('canvas');
+		var gl2 = canvas.getContext( 'webgl2', {stencil:true, antialias: true} );
+		var isWebGL2 = !!gl2;
+        if(!isWebGL2) {
+			console.log("webgl 1");
+            this.renderer = new THREE.WebGLRenderer( { canvas: canvas , antialias: true } );
+        } else {
+			console.log("webgl 2");
+			this.renderer = new THREE.WebGLRenderer( { canvas: canvas, context: gl2 } );
+		}
+		
 		this.renderer.setPixelRatio( window.devicePixelRatio );
 		this.renderer.setSize( window.innerWidth, window.innerHeight );
 		this.renderer.setClearColor( 0xffffff );
