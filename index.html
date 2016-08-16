@@ -25,6 +25,10 @@
 	<script src="js/picking.js"></script>
 	<script src="js/simulation.js"></script>
 
+	<script src="js/third-party/gl-matrix-min.js"></script>
+	<script src="js/third-party/noise3D.js"></script>
+	<script src="js/texture3DBox.js"></script>
+
 </head>
 <body>
 	<div id="info">
@@ -33,7 +37,7 @@
 	<div id="controls">
 		<label><input id="showCaps" type="checkbox" checked /> Show caps</label>
 	</div>
-	<script>new CAPS.Simulation()</script>
+	<script>var caps = new CAPS.Simulation();</script>
 </body>
 </html>
 

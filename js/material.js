@@ -9,7 +9,9 @@ CAPS.MATERIAL = {
 	cap: new THREE.ShaderMaterial( {
 		uniforms:       CAPS.UNIFORMS.caps,
 		vertexShader:   CAPS.SHADER.vertex,
-		fragmentShader: CAPS.SHADER.fragment
+		fragmentShader: CAPS.SHADER.fragment,
+		// vertexShader:   CAPS.SHADER.vertex3DTexture,
+		// fragmentShader: CAPS.SHADER.fragment3DTexture
 	} ),
 
 	backStencil: new THREE.ShaderMaterial( {

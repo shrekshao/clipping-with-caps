@@ -58,6 +58,7 @@ CAPS.Simulation.prototype = {
         } else {
 			console.log("webgl 2");
 			this.renderer = new THREE.WebGLRenderer( { canvas: canvas, context: gl2 } );
+			this.texture3DBox = new CAPS.Texture3DBox(gl2);
 		}
 		
 		this.renderer.setPixelRatio( window.devicePixelRatio );
@@ -92,6 +93,8 @@ CAPS.Simulation.prototype = {
 
 		throttledRender();
 
+		
+
 	},
 
 	initScene: function ( collada ) {
@@ -124,6 +127,11 @@ CAPS.Simulation.prototype = {
 
 		this.throttledRender();
 
+
+		this.texture3DBox.setup(this.capsScene.children[0].geometry.vertices
+				 , this.capsScene.children[0].geometry.faces);
+
+
 	},
 
 	_render: function () {
@@ -134,25 +142,29 @@ CAPS.Simulation.prototype = {
 
 		if ( this.showCaps ) {
 
-			this.renderer.state.setStencilTest( true );
+			//this.renderer.state.setStencilTest( true );
 
-			this.renderer.state.setStencilFunc( gl.ALWAYS, 1, 0xff );
-			this.renderer.state.setStencilOp( gl.KEEP, gl.KEEP, gl.INCR );
-			this.renderer.render( this.backStencil, this.camera );
+			//this.renderer.state.setStencilFunc( gl.ALWAYS, 1, 0xff );
+			// this.renderer.state.setStencilOp( gl.KEEP, gl.KEEP, gl.INCR );
+			// this.renderer.render( this.backStencil, this.camera );
 
-			this.renderer.state.setStencilFunc( gl.ALWAYS, 1, 0xff );
-			this.renderer.state.setStencilOp( gl.KEEP, gl.KEEP, gl.DECR );
-			this.renderer.render( this.frontStencil, this.camera );
+			// this.renderer.state.setStencilFunc( gl.ALWAYS, 1, 0xff );
+			// this.renderer.state.setStencilOp( gl.KEEP, gl.KEEP, gl.DECR );
+			// this.renderer.render( this.frontStencil, this.camera );
 
-			this.renderer.state.setStencilFunc( gl.EQUAL, 1, 0xff );
+			//this.renderer.state.setStencilFunc( gl.EQUAL, 1, 0xff );
 			this.renderer.state.setStencilOp( gl.KEEP, gl.KEEP, gl.KEEP );
-			this.renderer.render( this.capsScene, this.camera );
+			//this.renderer.render( this.capsScene, this.camera );
 
-			this.renderer.state.setStencilTest( false );
+			var mv = new THREE.Matrix4();
+			mv.multiplyMatrices(this.camera.matrixWorldInverse, this.capsScene.children[0].matrixWorld);
+			this.texture3DBox.drawTexture3DBox(mv.elements, this.camera.projectionMatrix.elements);
+
+			//this.renderer.state.setStencilTest( false );
 
 		}
 
-		this.renderer.render( this.scene, this.camera );
+		//this.renderer.render( this.scene, this.camera );
 
 	}
 
